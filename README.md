@@ -1,6 +1,6 @@
 # ldap-container
 
-##Test by docker
+## Test by docker
 ```shell=
 ex. sthost01 / PWDhostst01
 docker build -t ubuntu:ldap .
@@ -18,7 +18,7 @@ ssh ${ldapuser}@localhost -p ${22forword_port}
 docker stop test_ldap && docker rm test_ldap 
 ```
 
-##Test by kubernetes
+## Test by kubernetes
 ```shell=
 kubectl create -f ldap-ssh.yaml
 ```
