@@ -8,7 +8,9 @@ RUN set -xe; \
     mkdir -p /var/run/sshd
 COPY ldap-auth-config /etc/auth-client-config/profile.d/ldap-auth-config
 COPY ldap.conf /etc/ldap.conf
-RUN chown root:root /usr
+COPY ldap.secret /etc/ldap.secret
+RUN chmod 600 /etc/ldap.secret
+
 RUN /usr/sbin/auth-client-config -t nss -p lac_ldap
 CMD /bin/sh -c "set -xe; service nscd restart; /usr/sbin/sshd -D"
 
