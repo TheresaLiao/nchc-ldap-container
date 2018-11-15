@@ -1,0 +1,7 @@
+TARGETS = libnss-ldap nscd hwclock.sh urandom sendsigs umountnfs.sh umountfs umountroot halt reboot
+sendsigs: nscd
+umountnfs.sh: sendsigs nscd
+umountfs: hwclock.sh urandom umountnfs.sh nscd
+umountroot: umountfs
+halt: umountroot
+reboot: umountroot

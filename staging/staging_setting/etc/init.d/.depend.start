@@ -1,0 +1,5 @@
+TARGETS = nscd killprocs ssh single ondemand rc.local
+INTERACTIVE =
+single: killprocs
+ondemand: nscd ssh
+rc.local: nscd ssh
