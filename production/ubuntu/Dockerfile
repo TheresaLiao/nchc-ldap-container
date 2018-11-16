@@ -18,5 +18,6 @@ COPY pam.d /etc/pam.d
 COPY nslcd.conf /etc/nslcd.conf
 
 RUN /usr/sbin/auth-client-config -t nss -p lac_ldap
-CMD /bin/sh -c "set -xe; service nscd stop; service nslcd start; /usr/sbin/sshd -D"
 EXPOSE 22
+
+CMD /bin/sh -c "set -xe; service nscd stop; service nslcd start; /usr/sbin/sshd -D"
