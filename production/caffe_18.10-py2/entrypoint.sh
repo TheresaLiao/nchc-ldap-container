@@ -1,3 +1,4 @@
 set -xe
-/etc/init.d/nslcd start
-/etc/init.d/ssh start
+service nscd stop
+service nslcd start
+/usr/sbin/sshd -D
