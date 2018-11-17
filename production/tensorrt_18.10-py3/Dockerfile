@@ -20,6 +20,6 @@ RUN chown root:root /usr
 RUN /usr/sbin/auth-client-config -t nss -p lac_ldap
 
 COPY entrypoint.sh /entrypoint.sh
-ENTRYPOINT /bin/sh entrypoint.sh
+ENTRYPOINT /bin/sh /entrypoint.sh
 
 EXPOSE 22
