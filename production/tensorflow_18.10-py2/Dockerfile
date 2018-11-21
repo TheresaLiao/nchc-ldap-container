@@ -1,4 +1,4 @@
-FROM registry.twcc.ai/ngc/nvidia/tensorflow:18.10-py2
+FROM nvcr.io/nvidia/tensorflow:18.10-py2
 RUN set -xe; \
     apt-get update; \
     DEBIAN_FRONTEND=noninteractive apt-get -y install libnss-ldap libpam-ldap ldap-utils nscd ;\

@@ -1,9 +1,12 @@
-FROM registry.twcc.ai/ngc/nvidia/caffe:18.10-py2
+FROM nvcr.io/nvidia/caffe:18.10-py2
 RUN set -xe; \
     apt-get update; \
+    apt-get install -y sudo; \
     DEBIAN_FRONTEND=noninteractive apt-get -y install libnss-ldap libpam-ldap ldap-utils nscd ;\
     DEBIAN_FRONTEND=noninteractive apt-get install -y libpam-ldapd ;\
     apt-get -y install openssh-server openssh-client
+
+RUN useradd -m sthost01 && echo "sthost01:sthost01" | chpasswd && adduser sthost01 sudo
 
 RUN set -xe; \
     echo "session required pam_mkhomedir.so skel=/etc/skel umask=077" >> /etc/pam.d/common-session; \

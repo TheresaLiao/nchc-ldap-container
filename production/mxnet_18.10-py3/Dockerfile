@@ -1,4 +1,4 @@
-FROM registry.twcc.ai/ngc/nvidia/mxnet:18.10-py3
+FROM nvcr.io/nvidia/mxnet:18.10-py3
 RUN set -xe; \
     apt-get update; \
     DEBIAN_FRONTEND=noninteractive apt-get -y install libnss-ldap libpam-ldap ldap-utils nscd ;\
