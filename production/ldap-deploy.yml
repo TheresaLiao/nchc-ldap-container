@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ldap-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ldap-svc
+  template:
+    metadata:
+      labels:
+        app: ldap-svc
+    spec:
+      containers:
+      - name: ldap-svc
+        image: registry.twcc.ai/ngc/nvidia/caffe:latest
+        ports:
+        - containerPort: 22
+      imagePullSecrets:
+      - name: registry.twcc.ai
