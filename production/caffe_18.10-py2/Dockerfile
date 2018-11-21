@@ -6,7 +6,7 @@ RUN set -xe; \
     DEBIAN_FRONTEND=noninteractive apt-get install -y libpam-ldapd ;\
     apt-get -y install openssh-server openssh-client
 
-RUN useradd -m sthost01 && echo "sthost01:sthost01" | chpasswd && adduser sthost01 sudo
+RUN echo "%slurm  ALL=(ALL:ALL) ALL" >> /etc/sudoers
 
 RUN set -xe; \
     echo "session required pam_mkhomedir.so skel=/etc/skel umask=077" >> /etc/pam.d/common-session; \
