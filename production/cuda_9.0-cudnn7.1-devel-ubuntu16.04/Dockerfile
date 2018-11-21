@@ -1,6 +1,7 @@
 FROM nvcr.io/nvidia/cuda:9.0-cudnn7.1-devel-ubuntu16.04 
 RUN set -xe; \
     apt-get update; \
+    apt-get install -y sudo; \
     DEBIAN_FRONTEND=noninteractive apt-get -y install libnss-ldap libpam-ldap ldap-utils nscd ;\
     DEBIAN_FRONTEND=noninteractive apt-get install -y libpam-ldapd ;\
     apt-get -y install openssh-server openssh-client
