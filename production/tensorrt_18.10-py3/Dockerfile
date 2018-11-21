@@ -1,20 +1,41 @@
 FROM nvcr.io/nvidia/tensorrt:18.10-py3
-RUN set -xe; \
-    apt-get update; \
-    apt-get install -y sudo; \
-    DEBIAN_FRONTEND=noninteractive apt-get -y install libnss-ldap libpam-ldap ldap-utils nscd ;\
-    DEBIAN_FRONTEND=noninteractive apt-get install -y libpam-ldapd ;\
-    apt-get -y install openssh-server openssh-client
 
+# Install required packages
+RUN apt-get update  && \
+    apt-get install -y sudo && \
+    DEBIAN_FRONTEND=noninteractive apt-get -y install libnss-ldap libpam-ldap ldap-utils nscd && \
+    DEBIAN_FRONTEND=noninteractive apt-get -y install libpam-ldapd && \
+    apt-get install -y openssh-server openssh-client
+
+# Assign slurm as admin(sudo)
 RUN echo "%slurm  ALL=(ALL:ALL) ALL" >> /etc/sudoers    
 
-RUN set -xe; \
-    echo "session required pam_mkhomedir.so skel=/etc/skel umask=077" >> /etc/pam.d/common-session; \
+RUN echo "session required pam_mkhomedir.so skel=/etc/skel umask=077" >> /etc/pam.d/common-session && \
     mkdir -p /var/run/sshd
+
+# Install python3's pip package
+RUN apt-get install -y libsqlite3-dev \
+        libzmq3-dev \
+        python3 \
+        python3-pip \
+        python3-dev && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+RUN python3 -m pip --version
+RUN python3 -m pip install -U setuptools
+
+# install jupyter
+RUN python3 -m pip install jupyter
+RUN jupyter notebook --generate-config --port 1010
+RUN python3 -m pip install --upgrade pip
+COPY jupyter_notebook_config.py /root/.jupyter/
+
+# LDAP Config
 COPY ldap-auth-config /etc/auth-client-config/profile.d/ldap-auth-config
 COPY ldap.conf /etc/ldap.conf
 COPY ldap.secret /etc/ldap.secret
 RUN chmod 600 /etc/ldap.secret
+
 
 COPY pam.d /etc/pam.d
 COPY nslcd.conf /etc/nslcd.conf
