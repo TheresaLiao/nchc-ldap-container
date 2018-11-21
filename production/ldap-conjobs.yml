@@ -1,0 +1,18 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: ldap-conjobs
+spec: 
+  schedule: "0 17 * * *" # "0 1 * * * TZ=Asia/Taipei"
+  jobTemplate: 
+    spec:
+      activeDeadlineSeconds: 43200 # 12 hours
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: backup-pod-daily
+            image: registry.twcc.ai/ngc/nvidia/caffe:latest
+            command: ["/bin/sh","-c", "getent passwd slurmuser;su slurmuser"]
+          imagePullSecrets:
+          - name: registry.twcc.ai
