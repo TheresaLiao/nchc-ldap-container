@@ -1,4 +1,4 @@
-FROM registry.twcc.ai/ngc/nvidia/caffe2:18.08-py2
+FROM nvcr.io/nvidia/caffe2:18.08-py2
 RUN set -xe; \
     apt-get update; \
     DEBIAN_FRONTEND=noninteractive apt-get -y install libnss-ldap libpam-ldap ldap-utils nscd ;\

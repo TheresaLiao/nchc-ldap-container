@@ -1,4 +1,4 @@
-FROM registry.twcc.ai/ngc/nvidia/digits:18.10
+FROM nvcr.io/nvidia/digits:18.10
 RUN set -xe; \
     apt-get update; \
     DEBIAN_FRONTEND=noninteractive apt-get -y install libnss-ldap libpam-ldap ldap-utils nscd ;\
