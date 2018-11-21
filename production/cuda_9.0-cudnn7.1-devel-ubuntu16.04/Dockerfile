@@ -1,4 +1,4 @@
-FROM registry.twcc.ai/ngc/nvidia/cuda:9.0-cudnn7.1-devel-ubuntu16.04 
+FROM nvcr.io/nvidia/cuda:9.0-cudnn7.1-devel-ubuntu16.04 
 RUN set -xe; \
     apt-get update; \
     DEBIAN_FRONTEND=noninteractive apt-get -y install libnss-ldap libpam-ldap ldap-utils nscd ;\
