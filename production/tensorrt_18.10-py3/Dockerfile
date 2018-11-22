@@ -28,7 +28,18 @@ RUN python3 -m pip install -U setuptools
 RUN python3 -m pip install jupyter
 RUN jupyter notebook --generate-config --port 1010
 RUN python3 -m pip install --upgrade pip
+
+# Set up our notebook config.
 COPY jupyter_notebook_config.py /root/.jupyter/
+
+# Copy sample notebooks.
+COPY notebooks /notebooks
+
+# Jupyter has issues with being run directly:
+#   https://github.com/ipython/ipython/issues/7062
+# We just add a little wrapper script.
+COPY run_jupyter.sh /
+RUN ["chmod", "+x", "/run_jupyter.sh"]
 
 # LDAP Config
 COPY ldap-auth-config /etc/auth-client-config/profile.d/ldap-auth-config
@@ -47,3 +58,10 @@ COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT /bin/sh /entrypoint.sh
 
 EXPOSE 22
+
+# IPython
+EXPOSE 8888
+
+WORKDIR "/notebooks"
+
+CMD ["/run_jupyter.sh", "--allow-root"]
