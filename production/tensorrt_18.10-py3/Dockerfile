@@ -5,7 +5,7 @@ RUN apt-get update  && \
     apt-get install -y sudo && \
     DEBIAN_FRONTEND=noninteractive apt-get -y install libnss-ldap libpam-ldap ldap-utils nscd && \
     DEBIAN_FRONTEND=noninteractive apt-get -y install libpam-ldapd && \
-    apt-get install -y openssh-server openssh-client
+    apt-get install -y openssh-server openssh-client supervisor
 
 # Assign slurm as admin(sudo)
 RUN echo "%slurm  ALL=(ALL:ALL) ALL" >> /etc/sudoers    
@@ -55,13 +55,17 @@ RUN chown root:root /usr
 RUN /usr/sbin/auth-client-config -t nss -p lac_ldap
 
 COPY entrypoint.sh /entrypoint.sh
-ENTRYPOINT /bin/sh /entrypoint.sh
+#ENTRYPOINT /bin/sh /entrypoint.sh
+
+WORKDIR "/notebooks"
 
 EXPOSE 22
 
 # IPython
 EXPOSE 8888
 
-WORKDIR "/notebooks"
 
-CMD ["/run_jupyter.sh", "--allow-root"]
+ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf 
+ENTRYPOINT ["/usr/bin/supervisord"]
+
+#CMD ["/run_jupyter.sh", "--allow-root"]
