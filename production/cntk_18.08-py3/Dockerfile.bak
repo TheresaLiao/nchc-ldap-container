@@ -54,9 +54,6 @@ COPY nslcd.conf /etc/nslcd.conf
 
 RUN /usr/sbin/auth-client-config -t nss -p lac_ldap
 
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.5 2
-
 COPY entrypoint.sh /entrypoint.sh
 #ENTRYPOINT /bin/sh /entrypoint.sh
 
