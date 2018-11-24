@@ -7,7 +7,7 @@ RUN apt-get update  && \
     DEBIAN_FRONTEND=noninteractive apt-get -y install libpam-ldapd && \
     apt-get install -y openssh-server openssh-client supervisor
 
-COPY init.sh /etc/profile.d
+COPY init.sh /etc/profile.d/
 
 # Assign slurm as admin(sudo)
 RUN echo "%slurm  ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/slurm
@@ -26,9 +26,6 @@ COPY nslcd.conf /etc/nslcd.conf
 
 RUN /usr/sbin/auth-client-config -t nss -p lac_ldap
 
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.5 2
-
 COPY entrypoint.sh /entrypoint.sh
 RUN ["chmod", "+x", "/entrypoint.sh"]
 #ENTRYPOINT /bin/sh /entrypoint.sh
@@ -43,6 +40,9 @@ RUN apt-get install -y libsqlite3-dev \
     rm -rf /var/lib/apt/lists/*
 RUN python3 -m pip --version
 RUN python3 -m pip install -U setuptools
+
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.5 2
 
 # install jupyter
 RUN python3 -m pip install jupyter
