@@ -7,8 +7,11 @@ RUN apt-get update  && \
     DEBIAN_FRONTEND=noninteractive apt-get -y install libpam-ldapd && \
     apt-get install -y openssh-server openssh-client supervisor
 
+COPY init.sh /etc/profile.d/
+
 # Assign slurm as admin(sudo)
-RUN echo "%slurm  ALL=(ALL:ALL) ALL" >> /etc/sudoers    
+RUN echo "%slurm  ALL=(ALL:ALL) NOPASSWD:ALL" >> /etc/sudoers  
+ 
 
 RUN echo "session required pam_mkhomedir.so skel=/etc/skel umask=077" >> /etc/pam.d/common-session && \
     mkdir -p /var/run/sshd
