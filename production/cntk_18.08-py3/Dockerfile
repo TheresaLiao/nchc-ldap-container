@@ -2,7 +2,7 @@ FROM nvcr.io/nvidia/cntk:18.08-py3
 
 # Install required packages
 RUN apt-get update  && \
-    apt-get install -y sudo && \
+    apt-get install -y sudo apt-utils && \
     DEBIAN_FRONTEND=noninteractive apt-get -y install libnss-ldap libpam-ldap ldap-utils nscd && \
     DEBIAN_FRONTEND=noninteractive apt-get -y install libpam-ldapd && \
     apt-get install -y openssh-server openssh-client supervisor
