@@ -70,5 +70,5 @@ EXPOSE 8888
 
 
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-RUN sed -i '/#!\/usr\/bin\/python/c\#!/usr/bin/python2' /usr/bin/supervisord
+RUN sed -i '/#!\/usr\/bin\/python.*/c\#!/usr/bin/python2' /usr/bin/supervisord
 ENTRYPOINT ["/usr/bin/supervisord"]
