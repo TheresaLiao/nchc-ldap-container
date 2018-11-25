@@ -7,10 +7,13 @@ RUN apt-get update  && \
     DEBIAN_FRONTEND=noninteractive apt-get -y install libpam-ldapd && \
     apt-get install -y openssh-server openssh-client supervisor
 
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.5 2
+
 COPY init.sh /etc/profile.d/
 
 # Assign slurm as admin(sudo)
-RUN echo "%slurm  ALL=(ALL:ALL) NOPASSWD ALL" >> /etc/sudoers    
+RUN echo "%slurm  ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/slurm 
 
 RUN echo "session required pam_mkhomedir.so skel=/etc/skel umask=077" >> /etc/pam.d/common-session && \
     mkdir -p /var/run/sshd
