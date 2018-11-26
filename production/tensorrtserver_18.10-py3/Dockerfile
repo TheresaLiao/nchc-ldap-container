@@ -65,7 +65,12 @@ WORKDIR "/notebooks"
 
 EXPOSE 22
 
-# IPython
+# TensroRT 
+EXPOSE 8000
+EXPOSE 8001
+EXPOSE 8002
+
+# Jupyter
 EXPOSE 8888
 
 
