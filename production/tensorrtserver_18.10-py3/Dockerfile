@@ -41,8 +41,8 @@ RUN apt-get install -y libsqlite3-dev \
 RUN python3 -m pip --version
 RUN python3 -m pip install -U setuptools
 
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.5 2
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.5 1
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python2.7 2
 
 # install jupyter
 RUN python3 -m pip install jupyter
