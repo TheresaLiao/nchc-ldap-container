@@ -33,21 +33,17 @@ RUN ["chmod", "+x", "/entrypoint.sh"]
 # Install python3's pip package
 RUN apt-get install -y libsqlite3-dev \
         libzmq3-dev \
-        python3 \
-        python3-pip \
-        python3-dev && \
+        python \
+        python-pip \
+        python-dev && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-RUN python3 -m pip --version
-RUN python3 -m pip install -U setuptools
-
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.5 2
+RUN python -m pip install -U setuptools
 
 # install jupyter
-RUN python3 -m pip install jupyter
+RUN python -m pip install jupyter
 RUN jupyter notebook --generate-config --port 1010
-RUN python3 -m pip install --upgrade pip
+RUN python -m pip install --upgrade pip
 
 # Set up our notebook config.
 COPY jupyter_notebook_config.py /root/.jupyter/
