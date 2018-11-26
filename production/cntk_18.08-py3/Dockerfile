@@ -2,7 +2,7 @@ FROM nvcr.io/nvidia/cntk:18.08-py3
 
 # Install required packages
 RUN apt-get update  && \
-    apt-get install -y sudo && \
+    apt-get install -y sudo apt-utils && \
     DEBIAN_FRONTEND=noninteractive apt-get -y install libnss-ldap libpam-ldap ldap-utils nscd && \
     DEBIAN_FRONTEND=noninteractive apt-get -y install libpam-ldapd && \
     apt-get install -y openssh-server openssh-client supervisor
@@ -70,5 +70,5 @@ EXPOSE 8888
 
 
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-RUN sed -i '/#!\/usr\/bin\/python/c\#!/usr/bin/python2' /usr/bin/supervisord
+RUN sed -i '/#!\/usr\/bin\/python.*/c\#!/usr/bin/python2' /usr/bin/supervisord
 ENTRYPOINT ["/usr/bin/supervisord"]
