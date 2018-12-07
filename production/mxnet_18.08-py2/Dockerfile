@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/pytorch:18.08-py3
+FROM nvcr.io/nvidia/mxnet:18.08-py2
 
 # Install required packages
 RUN apt-get update  && \
@@ -28,37 +28,20 @@ RUN /usr/sbin/auth-client-config -t nss -p lac_ldap
 
 COPY entrypoint.sh /entrypoint.sh
 RUN ["chmod", "+x", "/entrypoint.sh"]
-<<<<<<< HEAD
-=======
 #ENTRYPOINT /bin/sh /entrypoint.sh
->>>>>>> upstream/master
 
 # Install python3's pip package
 RUN apt-get install -y libsqlite3-dev \
-        libzmq3-dev \
-        python3 \
-        python3-pip \
-        python3-dev && \
+        libzmq3-dev && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-<<<<<<< HEAD
-=======
-RUN python3 -m pip --version
-RUN python3 -m pip install -U setuptools
->>>>>>> upstream/master
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.5 2
 
 # install jupyter
-RUN python3 -m pip install jupyter
-<<<<<<< HEAD
+RUN python -m pip install jupyter
 RUN rm -fr /root/.cache
 RUN jupyter notebook --generate-config --port 8888
-=======
-RUN jupyter notebook --generate-config --port 1010
-RUN python3 -m pip install --upgrade pip
->>>>>>> upstream/master
 
 # Set up our notebook config.
 COPY jupyter_notebook_config.py /root/.jupyter/
@@ -70,18 +53,9 @@ COPY run_jupyter.sh /
 RUN ["chmod", "+x", "/run_jupyter.sh"]
 
 # Copy sample notebooks.
-<<<<<<< HEAD
 COPY notebooks /workspace
 RUN ["chmod", "0777", "/workspace"]
 WORKDIR "/workspace"
-=======
-COPY notebooks /notebooks
-RUN ["chmod", "0766", "/notebooks"]
-
-WORKDIR "/workspace"
-RUN chmod 0777 /workspace
-RUN rm -r /root/.cach
->>>>>>> upstream/master
 
 EXPOSE 22
 
@@ -90,5 +64,4 @@ EXPOSE 8888
 
 
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-RUN sed -i '/#!\/usr\/bin\/python/c\#!/usr/bin/python2' /usr/bin/supervisord
 ENTRYPOINT ["/usr/bin/supervisord"]
