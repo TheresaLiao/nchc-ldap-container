@@ -39,6 +39,7 @@ RUN apt-get install -y libsqlite3-dev \
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
 
 # install jupyter
+RUN python -m pip install --upgrade pip
 RUN python -m pip install jupyter
 RUN rm -fr /root/.cache
 RUN jupyter notebook --generate-config --port 8888
