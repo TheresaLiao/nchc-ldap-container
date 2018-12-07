@@ -1,7 +1,8 @@
-FROM nvcr.io/nvidia/tensorflow:18.10-py3 
+FROM nvcr.io/nvidia/tensorflow:18.08-py3 
 
 COPY requirement.txt /root/
 RUN pip install -r /root/requirement.txt
+RUN rm -fr /root/.cache
 
 COPY try.py /root/
 
@@ -13,8 +14,9 @@ RUN set -xe; \
     DEBIAN_FRONTEND=noninteractive apt-get -y install libnss-ldap libpam-ldap ldap-utils nscd ;\
     DEBIAN_FRONTEND=noninteractive apt-get install -y libpam-ldapd ;\
     apt-get -y install openssh-server openssh-client
+RUN apt-get clean all
 
-RUN echo "%slurm  ALL=(ALL:ALL) NOPASSWD:ALL" >> /etc/sudoers    
+RUN echo "%slurm  ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/slurm  
 
 RUN set -xe; \
     echo "session required pam_mkhomedir.so skel=/etc/skel umask=077" >> /etc/pam.d/common-session; \
