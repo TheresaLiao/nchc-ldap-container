@@ -6,11 +6,12 @@ RUN apt-get update  && \
     DEBIAN_FRONTEND=noninteractive apt-get -y install libnss-ldap libpam-ldap ldap-utils nscd && \
     DEBIAN_FRONTEND=noninteractive apt-get -y install libpam-ldapd && \
     apt-get install -y openssh-server openssh-client supervisor
+RUN apt-get clean all
 
 COPY init.sh /etc/profile.d/
 
 # Assign slurm as admin(sudo)
-RUN echo "%slurm  ALL=(ALL:ALL) NOPASSWD:ALL" >> /etc/sudoers     
+RUN echo "%slurm  ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/slurm 
 
 RUN echo "session required pam_mkhomedir.so skel=/etc/skel umask=077" >> /etc/pam.d/common-session && \
     mkdir -p /var/run/sshd
@@ -21,6 +22,7 @@ RUN echo "session required pam_mkhomedir.so skel=/etc/skel umask=077" >> /etc/pa
 
 # install jupyter
 RUN python -m pip install jupyter
+RUN rm -fr /root/.cache
 RUN jupyter notebook --generate-config --port 8888
 # RUN python -m pip install --upgrade pip
 
@@ -51,16 +53,11 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod 0755 /entrypoint.sh
 #ENTRYPOINT /bin/sh /entrypoint.sh
 
-RUN chmod 0777 /notebooks
-
 WORKDIR "/workspace"
 RUN chmod 0777 /workspace
 
 EXPOSE 22
-
-# IPython
 EXPOSE 8888
-
 
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf 
 ENTRYPOINT ["/usr/bin/supervisord"]

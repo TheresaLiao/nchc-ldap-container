@@ -6,6 +6,7 @@ RUN apt-get update  && \
     DEBIAN_FRONTEND=noninteractive apt-get -y install libnss-ldap libpam-ldap ldap-utils nscd && \
     DEBIAN_FRONTEND=noninteractive apt-get -y install libpam-ldapd && \
     apt-get install -y openssh-server openssh-client supervisor
+RUN apt-get clean all
 
 COPY init.sh /etc/profile.d/
 
@@ -35,6 +36,7 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
 
 # install jupyter
 RUN python3 -m pip install jupyter
+RUN rm -fr /root/.cache
 RUN jupyter notebook --generate-config --port 8888
 # RUN python3 -m pip install --upgrade pip
 
@@ -54,17 +56,11 @@ COPY notebooks /workspace
 COPY run_jupyter.sh /
 RUN ["chmod", "+x", "/run_jupyter.sh"]
 
-# Copy sample notebooks.
-COPY notebooks /notebooks
-RUN ["chmod", "0777", "/notebooks"]
 WORKDIR "/workspace"
 RUN chmod 0777 /workspace
 
 EXPOSE 22
-
-# IPython
 EXPOSE 8888
-
 
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf 
 RUN sed -i '/#!\/usr\/bin\/python.*/c\#!/usr/bin/python2' /usr/bin/supervisord
