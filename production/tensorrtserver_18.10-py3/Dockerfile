@@ -33,9 +33,9 @@ RUN ["chmod", "+x", "/entrypoint.sh"]
 # Install python3's pip package
 RUN apt-get install -y libsqlite3-dev \
         libzmq3-dev \
-        python3 \
-        python3-pip \
-        python3-dev && \
+        python \
+        python-pip \
+        python-dev && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 RUN python3 -m pip --version
