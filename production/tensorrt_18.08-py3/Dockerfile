@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/cuda:9.0-cudnn7.1-devel-ubuntu16.04 
+FROM nvcr.io/nvidia/tensorrt:18.08-py3
 
 # Install required packages
 RUN apt-get update  && \
@@ -24,6 +24,7 @@ RUN chmod 600 /etc/ldap.secret
 COPY pam.d /etc/pam.d
 COPY nslcd.conf /etc/nslcd.conf
 
+RUN chown root:root /usr
 RUN /usr/sbin/auth-client-config -t nss -p lac_ldap
 
 COPY entrypoint.sh /entrypoint.sh

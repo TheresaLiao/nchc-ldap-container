@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/cuda:9.0-cudnn7.1-devel-ubuntu16.04 
+FROM nvcr.io/nvidia/pytorch:18.08-py3
 
 # Install required packages
 RUN apt-get update  && \

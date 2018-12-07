@@ -60,8 +60,11 @@ RUN ["chmod", "+x", "/run_jupyter.sh"]
 
 # Copy sample notebooks.
 COPY notebooks /notebooks
-RUN ["chmod", "0766", "/notebooks"]
-WORKDIR "/notebooks"
+
+RUN chmod 0777 /notebooks
+
+WORKDIR "/workspace"
+RUN chmod 0777 /workspace
 
 EXPOSE 22
 

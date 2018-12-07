@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/caffe2:18.08-py2
+FROM nvcr.io/nvidia/digits:18.08
 
 # Install required packages
 RUN apt-get update  && \
@@ -10,14 +10,14 @@ RUN apt-get update  && \
 COPY init.sh /etc/profile.d/
 
 # Assign slurm as admin(sudo)
-RUN echo "%slurm  ALL=(ALL:ALL) NOPASSWD:ALL" >> /etc/sudoers
+RUN echo "%slurm  ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/slurm
+RUN chmod 0440 /etc/sudoers.d/slurm
 
-RUN set -xe; \
-    echo "session required pam_mkhomedir.so skel=/etc/skel umask=077" >> /etc/pam.d/common-session; \
+RUN echo "session required pam_mkhomedir.so skel=/etc/skel umask=077" >> /etc/pam.d/common-session && \
     mkdir -p /var/run/sshd
 
-# Install python's pip package
-RUN python -m pip --version
+# Install python3's pip package
+RUN rm -rf /var/lib/apt/lists/*
 RUN python -m pip install -U setuptools
 
 # install jupyter
@@ -51,7 +51,7 @@ RUN /usr/sbin/auth-client-config -t nss -p lac_ldap
 COPY entrypoint.sh /entrypoint.sh
 #ENTRYPOINT /bin/sh /entrypoint.sh
 
-WORKDIR "/workspace"
+RKDIR "/workspace"
 RUN chmod 0777 /workspace
 RUN rm -r /root/.cach
 
@@ -59,6 +59,8 @@ EXPOSE 22
 
 # IPython
 EXPOSE 8888
+
+EXPOSE 5000
 
 
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf 
