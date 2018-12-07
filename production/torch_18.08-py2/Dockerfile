@@ -51,13 +51,14 @@ RUN /usr/sbin/auth-client-config -t nss -p lac_ldap
 COPY entrypoint.sh /entrypoint.sh
 #ENTRYPOINT /bin/sh /entrypoint.sh
 
-WORKDIR "/notebooks"
+RKDIR "/workspace"
+RUN chmod 0777 /workspace
+RUN rm -r /root/.cach
 
 EXPOSE 22
 
 # IPython
 EXPOSE 8888
-
 
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf 
 ENTRYPOINT ["/usr/bin/supervisord"]

@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/caffe2:18.08-py2
+FROM nvcr.io/nvidia/tensorrtserver:18.08-py2
 
 # Install required packages
 RUN apt-get update  && \
@@ -10,7 +10,7 @@ RUN apt-get update  && \
 COPY init.sh /etc/profile.d/
 
 # Assign slurm as admin(sudo)
-RUN echo "%slurm  ALL=(ALL:ALL) NOPASSWD:ALL" >> /etc/sudoers
+RUN echo "%slurm  ALL=(ALL:ALL) NOPASSWD:ALL" >> /etc/sudoers        
 
 RUN set -xe; \
     echo "session required pam_mkhomedir.so skel=/etc/skel umask=077" >> /etc/pam.d/common-session; \
@@ -30,6 +30,7 @@ COPY jupyter_notebook_config.py /root/.jupyter/
 
 # Copy sample notebooks.
 COPY notebooks /notebooks
+RUN ["chmod", "0766", "/notebooks"]
 
 # Jupyter has issues with being run directly:
 #   https://github.com/ipython/ipython/issues/7062
@@ -57,9 +58,13 @@ RUN rm -r /root/.cach
 
 EXPOSE 22
 
-# IPython
-EXPOSE 8888
+#TensorRT
+EXPOSE 8000
+EXPOSE 8001
+EXPOSE 8002
 
+# Jupyter
+EXPOSE 8888
 
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf 
 ENTRYPOINT ["/usr/bin/supervisord"]
