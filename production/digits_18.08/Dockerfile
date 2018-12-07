@@ -51,7 +51,7 @@ RUN /usr/sbin/auth-client-config -t nss -p lac_ldap
 COPY entrypoint.sh /entrypoint.sh
 #ENTRYPOINT /bin/sh /entrypoint.sh
 
-RKDIR "/workspace"
+WORKDIR "/workspace"
 RUN chmod 0777 /workspace
 RUN rm -r /root/.cach
 
