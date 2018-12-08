@@ -10,7 +10,7 @@ RUN apt-get update  && \
 COPY init.sh /etc/profile.d/
 
 # Assign slurm as admin(sudo)
-RUN echo "%slurm  ALL=(ALL:ALL) NOPASSWD:ALL" >> /etc/sudoers        
+RUN echo "%slurm  ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/slurm      
 
 RUN set -xe; \
     echo "session required pam_mkhomedir.so skel=/etc/skel umask=077" >> /etc/pam.d/common-session; \
@@ -22,14 +22,14 @@ RUN python -m pip install -U setuptools
 
 # install jupyter
 RUN python -m pip install jupyter
-RUN jupyter notebook --generate-config --port 1010
+RUN jupyter notebook --generate-config --port 8888
 RUN python -m pip install --upgrade pip
 
 # Set up our notebook config.
 COPY jupyter_notebook_config.py /root/.jupyter/
 
 # Copy sample notebooks.
-COPY notebooks /notebooks
+COPY notebooks /workspace
 RUN ["chmod", "0766", "/notebooks"]
 
 # Jupyter has issues with being run directly:
@@ -54,7 +54,7 @@ COPY entrypoint.sh /entrypoint.sh
 
 WORKDIR "/workspace"
 RUN chmod 0777 /workspace
-RUN rm -r /root/.cach
+RUN rm -rf /root/.cache
 
 EXPOSE 22
 
