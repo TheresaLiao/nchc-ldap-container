@@ -22,14 +22,14 @@ RUN python -m pip install -U setuptools
 
 # install jupyter
 RUN python -m pip install jupyter
-RUN jupyter notebook --generate-config --port 1010
+RUN jupyter notebook --generate-config --port 8888
 RUN python -m pip install --upgrade pip
 
 # Set up our notebook config.
 COPY jupyter_notebook_config.py /root/.jupyter/
 
 # Copy sample notebooks.
-COPY notebooks /notebooks
+COPY notebooks /workspace
 
 # Jupyter has issues with being run directly:
 #   https://github.com/ipython/ipython/issues/7062
@@ -53,7 +53,7 @@ COPY entrypoint.sh /entrypoint.sh
 
 WORKDIR "/workspace"
 RUN chmod 0777 /workspace
-RUN rm -r /root/.cach
+RUN rm -rf /root/.cache
 
 EXPOSE 22
 

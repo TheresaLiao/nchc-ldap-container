@@ -46,7 +46,7 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.5 2
 
 # install jupyter
 RUN python3 -m pip install jupyter
-RUN jupyter notebook --generate-config --port 1010
+RUN jupyter notebook --generate-config --port 8888
 RUN python3 -m pip install --upgrade pip
 
 # Set up our notebook config.
@@ -59,7 +59,7 @@ COPY run_jupyter.sh /
 RUN ["chmod", "+x", "/run_jupyter.sh"]
 
 # Copy sample notebooks.
-COPY notebooks /notebooks
+COPY notebooks /workspace
 
 RUN chmod 0777 /notebooks
 
