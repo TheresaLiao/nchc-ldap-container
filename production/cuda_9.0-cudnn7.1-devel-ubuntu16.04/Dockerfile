@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/cuda:9.0-cudnn7.1-devel-ubuntu16.04 
+FROM nvcr.io/nvidia/cuda:9.0-cudnn7.1-devel-ubuntu16.04
 
 # Install required packages
 RUN apt-get update  && \
@@ -45,9 +45,10 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.5 2
 
 # install jupyter
+RUN python3 -m pip install --upgrade pip
 RUN python3 -m pip install jupyter
 RUN jupyter notebook --generate-config --port 8888
-RUN python3 -m pip install --upgrade pip
+RUN rm -rf /root/.cache
 
 # Set up our notebook config.
 COPY jupyter_notebook_config.py /root/.jupyter/
@@ -59,12 +60,13 @@ COPY run_jupyter.sh /
 RUN ["chmod", "+x", "/run_jupyter.sh"]
 
 # Copy sample notebooks.
+RUN ["mkdir", "-p", "/workspace"]
+RUN ["chmod", "0777", "/workspace"]
 COPY notebooks /workspace
-RUN ["chmod", "0766", "/notebooks"]
+RUN ["chown", "-R", "11899:11899", "/workspace"]
 
 WORKDIR "/workspace"
-RUN chmod 0777 /workspace
-RUN rm -rf /root/.cache
+
 
 EXPOSE 22
 

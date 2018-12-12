@@ -19,11 +19,12 @@ RUN echo "session required pam_mkhomedir.so skel=/etc/skel umask=077" >> /etc/pa
 # Install python3's pip package
 RUN rm -rf /var/lib/apt/lists/*
 RUN python -m pip install -U setuptools
+RUN  python -m pip install -U pyzmq
+RUN python -m pip install --upgrade pip
 
 # install jupyter
 RUN python -m pip install jupyter
-RUN jupyter notebook --generate-config --port 8888
-RUN python -m pip install --upgrade pip
+RUN jupyter notebook --generate-config --port 5000
 
 # Set up our notebook config.
 COPY jupyter_notebook_config.py /root/.jupyter/
