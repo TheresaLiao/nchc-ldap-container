@@ -30,7 +30,7 @@ COPY jupyter_notebook_config.py /root/.jupyter/
 
 # Copy sample notebooks.
 COPY notebooks /workspace
-RUN ["chmod", "0766", "/notebooks"]
+RUN ["chmod", "0766", "/workspace"]
 
 # Jupyter has issues with being run directly:
 #   https://github.com/ipython/ipython/issues/7062

@@ -30,7 +30,8 @@ COPY jupyter_notebook_config.py /root/.jupyter/
 
 # Copy sample notebooks.
 COPY notebooks /workspace
-RUN ["chmod", "0766", "/notebooks"]
+RUN ["chown", "-R", "11899:11899", "/workspace"]
+RUN ["chmod", "0777", "/workspace"]
 
 # Jupyter has issues with being run directly:
 #   https://github.com/ipython/ipython/issues/7062
@@ -52,7 +53,7 @@ RUN /usr/sbin/auth-client-config -t nss -p lac_ldap
 COPY entrypoint.sh /entrypoint.sh
 #ENTRYPOINT /bin/sh /entrypoint.sh
 
-WORKDIR "/notebooks"
+WORKDIR "/workspace"
 
 EXPOSE 22
 

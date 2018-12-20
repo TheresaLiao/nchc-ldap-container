@@ -58,6 +58,7 @@ RUN ["chmod", "+x", "/run_jupyter.sh"]
 
 # Copy sample notebooks.
 COPY notebooks /workspace
+RUN ["chown", "-R", "11899:11899", "/workspace"]
 RUN ["chmod", "0777", "/workspace"]
 WORKDIR "/workspace"
 

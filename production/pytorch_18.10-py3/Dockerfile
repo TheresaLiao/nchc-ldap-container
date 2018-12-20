@@ -38,8 +38,8 @@ RUN apt-get install -y libsqlite3-dev \
         python3-dev && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-RUN python3 -m pip --version
-RUN python3 -m pip install -U setuptools
+# RUN python3 -m pip --version
+# RUN python3 -m pip install -U setuptools
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.5 2
@@ -47,7 +47,7 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.5 2
 # install jupyter
 RUN python3 -m pip install jupyter
 RUN jupyter notebook --generate-config --port 8888
-RUN python3 -m pip install --upgrade pip
+# RUN python3 -m pip install --upgrade pip
 
 # Set up our notebook config.
 COPY jupyter_notebook_config.py /root/.jupyter/
@@ -60,8 +60,8 @@ RUN ["chmod", "+x", "/run_jupyter.sh"]
 
 # Copy sample notebooks.
 COPY notebooks /workspace
-RUN ["chmod", "0766", "/notebooks"]
-WORKDIR "/notebooks"
+RUN ["chmod", "0777", "/workspace"]
+WORKDIR "/workspace"
 
 EXPOSE 22
 

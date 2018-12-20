@@ -16,19 +16,21 @@ RUN echo "session required pam_mkhomedir.so skel=/etc/skel umask=077" >> /etc/pa
     mkdir -p /var/run/sshd
 
 # Install python's pip package
-RUN python -m pip --version
-RUN python -m pip install -U setuptools
+# # RUN python -m pip --version
+# RUN python -m pip install -U setuptools
 
 # install jupyter
 RUN python -m pip install jupyter
+RUN rm -fr /root/.cache
 RUN jupyter notebook --generate-config --port 8888
-RUN python -m pip install --upgrade pip
+# RUN python -m pip install --upgrade pip
 
 # Set up our notebook config.
 COPY jupyter_notebook_config.py /root/.jupyter/
 
 # Copy sample notebooks.
 COPY notebooks /workspace
+RUN ["chmod", "0777", "/workspace"]
 
 # Jupyter has issues with being run directly:
 #   https://github.com/ipython/ipython/issues/7062
@@ -50,7 +52,7 @@ RUN /usr/sbin/auth-client-config -t nss -p lac_ldap
 COPY entrypoint.sh /entrypoint.sh
 #ENTRYPOINT /bin/sh /entrypoint.sh
 
-WORKDIR "/notebooks"
+WORKDIR "/workspace"
 
 EXPOSE 22
 

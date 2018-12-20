@@ -31,10 +31,7 @@ RUN ["chmod", "+x", "/entrypoint.sh"]
 
 # Install python3's pip package
 RUN apt-get install -y libsqlite3-dev \
-        libzmq3-dev \
-        python3 \
-        python3-pip \
-        python3-dev && \
+        libzmq3-dev && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -42,7 +39,9 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.5 2
 
 # install jupyter
-RUN python3 -m pip install jupyter
+RUN python -m pip install --upgrade IPython
+RUN python -m pip install --upgrade pip
+RUN python -m pip install jupyter
 RUN rm -fr /root/.cache
 RUN jupyter notebook --generate-config --port 8888
 
@@ -57,6 +56,7 @@ RUN ["chmod", "+x", "/run_jupyter.sh"]
 
 # Copy sample notebooks.
 COPY notebooks /workspace
+RUN ["chown", "-R", "11899:11899", "/workspace"]
 RUN ["chmod", "0777", "/workspace"]
 WORKDIR "/workspace"
 
